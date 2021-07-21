@@ -3,7 +3,8 @@ from nltk.stem.lancaster import LancasterStemmer
 
 stemmer = LancasterStemmer
 
-import numpy
+import numpy 
+import numpy as np
 import tflearn
 import tensorflow
 import random
@@ -37,6 +38,7 @@ labels = sorted(labels)
 training = []
 output = []
 
+# getting our data to fit in our model #
 out_empty = [0 for _ in range(len(classes))]
 
 for x, doc in enumerate(docs_x):
@@ -49,3 +51,12 @@ for x, doc in enumerate(docs_x):
             bag.append(1)
         else:
             bag.append(0)
+            
+    output_row = out_empty[:]
+    output_row[labels.index(docs_y[x])] = 1
+    
+    training.append(bag)
+    output.append(output_row)
+    
+training = numpy.array(training)
+output = np.array(output)
