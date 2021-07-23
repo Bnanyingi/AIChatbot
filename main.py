@@ -6,7 +6,7 @@ stemmer = LancasterStemmer
 import numpy 
 import numpy as np
 import tflearn
-import tensorflow
+import tensorflow as tf
 import random
 import json
 
@@ -60,3 +60,20 @@ for x, doc in enumerate(docs_x):
     
 training = numpy.array(training)
 output = np.array(output)
+
+#Application of AI to predict the statements given
+
+tf.reset_default_graph()
+
+#define input shape that we're expecting for our model
+net = tflearn.input_data(shape=[None, len(training[0])])
+net = tflearn.fully_connected(net, 8)
+net = tflearn.fully_connected(net, 8)
+net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
+net = tflearn.regression(net)
+
+#Type of Neural Network
+model = tflearn.DNN(net)
+
+model.fit(training, output, n_epoch=2000, batch_size=8, show_metric=True)
+model.save("model.tflearn")
