@@ -30,7 +30,7 @@ for intent in data["intents"]:
         labels.append(intent["tag"])
         
         
-words = [stemmer.stem(w.lower()) for w in words if]
+words = [stemmer.stem(w.lower()) for w in words if w not in "?"]
 words = sorted(list(set(words)))
 
 labels = sorted(labels)
