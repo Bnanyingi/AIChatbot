@@ -22,7 +22,7 @@ for intent in data["intents"]:
     for pattern in intent["patterns"]:
         wrds = nltk.word_tokenize(pattern)
         words.extend(wrds)
-        docs_x.append(pattern)
+        docs_x.append(wrds)
         docs_y.append(intent["tag"])
         
         
@@ -30,7 +30,7 @@ for intent in data["intents"]:
         labels.append(intent["tag"])
         
         
-words = [stemmer.stem(w.lower()) for w in words]
+words = [stemmer.stem(w.lower()) for w in words if]
 words = sorted(list(set(words)))
 
 labels = sorted(labels)
@@ -38,8 +38,8 @@ labels = sorted(labels)
 training = []
 output = []
 
-# getting our data to fit in our model #
-out_empty = [0 for _ in range(len(classes))]
+# getting our data to fit in our model 
+out_empty = [0 for _ in range(len(labels))]
 
 for x, doc in enumerate(docs_x):
     bag = []
