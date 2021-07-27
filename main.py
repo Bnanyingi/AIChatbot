@@ -9,14 +9,22 @@ import tflearn
 import tensorflow as tf
 import random
 import json
+import pickle
 
 with open("intents.json") as file:
      data = json.load(file)
      
-words = []
-labels = []
-docs_x = []
-docs_y = []
+try:
+    with open("data.pickle", "rb") as f:
+        #load into our pickle file
+        words, labels, training, output = pickle.load(f)
+        
+except:
+        
+    words = []
+    labels = []
+    docs_x = []
+    docs_y = []
 
 for intent in data["intents"]:
     for pattern in intent["patterns"]:
