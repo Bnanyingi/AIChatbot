@@ -69,6 +69,10 @@ for x, doc in enumerate(docs_x):
 training = numpy.array(training)
 output = np.array(output)
 
+with open("data.pickle", "wb") as f:
+        #saves all the data into our pickle file
+        pickle.dump((words, labels, training, output), f) 
+
 #Application of AI to predict the statements given
 
 tf.reset_default_graph()
@@ -83,5 +87,31 @@ net = tflearn.regression(net)
 #Type of Neural Network
 model = tflearn.DNN(net)
 
-model.fit(training, output, n_epoch=2000, batch_size=8, show_metric=True)
-model.save("model.tflearn")
+try:
+    model.load("model.tflearn")
+except: 
+    model.fit(training, output, n_epoch=2000, batch_size=8, show_metric=True)
+    model.save("model.tflearn")
+    
+def bag_of_words(s, words):
+    bag = [0 for _ in range(len(words))]
+    
+    s_words = nltk.word_tokenize(s)
+    s_words = [stemmer.stem(word.lower()) for word in s_words]
+    
+    for se in s_words:
+        for i, w in enumerate(words):
+            if w == se:
+                bag[i].append(1)
+                
+    return numpy.array(bag)
+
+def chat():
+    print("Start talking with the bot (type quit to stop)!")                            
+    while True:
+        inp = input("You: ")
+        if inp.lower() == "quit":
+            break
+        
+        results = model.predict([bag_of_words(inp, words)])
+        print(results)
